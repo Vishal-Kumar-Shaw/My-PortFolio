@@ -269,8 +269,9 @@ img {
 
 .about__img img {
   width: 200px;
-  border-radius: .5rem;
   border: 2px solid #3E6FF4;
+  border-radius: .5rem;
+  
 }
 
 /* ===== SKILLS =====*/
