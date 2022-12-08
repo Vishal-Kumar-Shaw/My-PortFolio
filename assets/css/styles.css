@@ -451,8 +451,8 @@ iconify-icon icon{
     margin-right: var(--mb-4);
   }
   .home__img {
-    width: 300px;
-    bottom: 25%;
+    /* width: 200px;
+    bottom: 35%; */
   }
   .about__container {
     grid-template-columns: repeat(2, 1fr);
@@ -545,5 +545,6 @@ iconify-icon icon{
   }
   .home__img {
     width: 450px;
+    margin-bottom: 100px;
   }
 }
