@@ -237,44 +237,9 @@
             <section class="work section" id="work">
                 <h2 class="section-title">Projects</h2>
 
-                <div class="work__container bd-grid">
-                    <a href="" class="work__img">
-                        <img src="assets/img/work1.jpg" alt="">
-                        <h3 style="display:inline-block;text-align: center; margin-left: 80px;">Project Name</h3>
-                        <i class='bx bxl-github' ></i>
-                        <p>Tools and Techs. -</p>
-                        
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work2.jpg" alt="">
-                        <h3 style="display:inline-block;text-align: center; margin-left: 80px;">Project Name</h3>
-                        <i class='bx bxl-github' ></i>
-                        <p>Tools and Techs. -</p>
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work3.jpg" alt="">
-                        <h3 style="display:inline-block;text-align: center; margin-left: 80px;">Project Name</h3>
-                        <i class='bx bxl-github' ></i>
-                        <p>Tools and Techs. -</p>
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work4.jpg" alt="">
-                        <h3 style="display:inline-block;text-align: center; margin-left: 80px;">Project Name</h3>
-                        <i class='bx bxl-github' ></i>
-                        <p>Tools and Techs. -</p>
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work5.jpg" alt="">
-                        <h3 style="display:inline-block;text-align: center; margin-left: 80px;">Project Name</h3>
-                        <i class='bx bxl-github' ></i>
-                        <p>Tools and Techs. -</p>
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work6.jpg" alt="">
-                        <h3 style="display:inline-block;text-align: center; margin-left: 80px;">Project Name</h3>
-                        <i class='bx bxl-github' ></i>
-                        <p>Tools and Techs. -</p>
-                    </a>
+                <div id="results" class="work__container bd-grid">
+                    
+                    
                 </div>
             </section>
 
@@ -283,11 +248,14 @@
                 <h2 class="section-title">Contact</h2>
 
                 <div class="contact__container bd-grid">
-                    <form action="" class="contact__form">
-                        <input type="text" placeholder="Name" class="contact__input">
-                        <input type="mail" placeholder="Email" class="contact__input">
-                        <textarea name="" id="" cols="0" rows="10" class="contact__input"></textarea>
-                        <input type="button" value="Contact Me" class="contact__button button">
+                    <div class="message" id="msg" style="display: none;">
+                        Message Sent Successfully.
+                    </div>
+                    <form class="contact__form">
+                        <input type="text" id="cname" placeholder="Name" class="contact__input">
+                        <input type="email" id="cemail" placeholder="Email" class="contact__input">
+                        <textarea name="" id="cmessage" cols="0" rows="10" class="contact__input"></textarea>
+                        <input type="button" onclick="contactme()" value="Contact Me" class="contact__button button">
                     </form>
                 </div>
             </section>
@@ -311,5 +279,64 @@
         <script src="assets/js/main.js"></script>
         <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
         <script src="https://kit.fontawesome.com/5d59e8f58e.js" crossorigin="anonymous"></script>
+        <script>
+
+            function makeData(data){
+                let html = ``;
+                for(let i = 0; i < data.length; i++){
+                    html += `
+                    <div style="box-shadow: 2px 2px 2px 1px rgba(0, 0, 255, .2);padding:2.5px">
+                        <a href="" class="work__img">
+                            <img src="assets/img/work1.jpg" alt="">
+                            <div style="background-color: #fff;padding-left: 5px;">
+                                <a href="${data[i]['Github Link']}" target="_blank"><h3 style="text-align: center;">${data[i]['Project Name']}</h3></a>
+                                <p>${data[i]['Tools and Tech']}</p>
+                            </div>
+                            
+                        </a>
+                    </div>
+                `;
+                }
+                document.getElementById('results').innerHTML = html;
+            }
+
+            async function getDataFromExcel(){
+                let scripturl = 'https://script.google.com/macros/s/AKfycbzgVqA-lku4whkNfjuIGVDC27sa0BR_u9PnLE6rEfsDOcoY8kaet21egbzusH_M9zGf/exec';
+                let data = await fetch(scripturl);
+                data = await data.json();
+                makeData(data);
+                console.log(data);
+            }
+            getDataFromExcel();
+
+            async function contactme(){
+                let cname = document.getElementById('cname').value;
+                let cemail = document.getElementById('cemail').value;
+                let cmessage = document.getElementById('cmessage').value;
+                object = {
+                    name:cname,
+                    email:cemail,
+                    message:cmessage
+                };
+                
+                let scripturl = "https://script.google.com/macros/s/AKfycbzVlBjtSSpaB1pswtDh_9rVeWI3SJlXpiMDNx0wD1jNskAborlqyVbYrHz8VHtHgjNe/exec";
+                let data = await fetch(scripturl, {
+                    method: "POST",
+                    body: JSON.stringify(object),
+                    mode: 'no-cors',
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8",
+                        'Access-Control-Allow-Origin':'*'
+                    }
+                });
+                document.getElementById('cname').value = '';
+                document.getElementById('cemail').value = '';
+                document.getElementById('cmessage').value = '';
+                document.getElementById('msg').style.display = 'block';
+                setTimeout(()=>{
+                    document.getElementById('msg').style.display = 'none';
+                },2000);
+            }
+        </script>
     </body>
 </html>
